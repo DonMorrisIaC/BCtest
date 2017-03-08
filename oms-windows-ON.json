@@ -11,9 +11,6 @@
         "workspaceKey": {
             "type": "string"
         },
-        "vmResourceId": {
-            "type": "string"
-        }
     },
     "variables": {
 
@@ -30,12 +27,10 @@
             "typeHandlerVersion": "1.0",
             "autoUpgradeMinorVersion": true,
             "settings": {
-                "workspaceId": "[parameters('workspaceId')]",
-                "azureResourceId`": "[parameters('vmResourceId')]" 
+                "workspaceId": "[parameters('workspaceId')]"
             },
             "protectedSettings": {
-                "workspaceKey": "[parameters('workspaceKey')]",
-                "vmResourceId": "[parameters('vmResourceId')]"
+                "workspaceKey": "[parameters('workspaceKey')]"
             }
         }
     }

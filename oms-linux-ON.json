@@ -11,9 +11,6 @@
         "workspaceKey": {
             "type": "string"
         },
-        "vmResourceId": {
-            "type": "string"
-        }
     },
     "variables": {
 
@@ -33,8 +30,7 @@
                 "workspaceId": "[parameters('workspaceId')]"
             },
             "protectedSettings": {
-                "workspaceKey": "[parameters('workspaceKey')]",
-                "vmResourceId": "[parameters('vmResourceId')]"
+                "workspaceKey": "[parameters('workspaceKey')]"
             }
         }
     }

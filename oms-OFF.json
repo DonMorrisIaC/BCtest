@@ -11,9 +11,6 @@
         "workspaceKey": {
             "type": "string"
         },
-        "vmResourceId": {
-            "type": "string"
-        }
     },
     "variables": {},
     "resources": [],
