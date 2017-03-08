@@ -1,0 +1,629 @@
+﻿{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "loadbalancerName": {
+      "type": "string",
+      "defaultValue": "services-lb",
+      "minLength": 1
+    },
+    "vnetName": {
+      "type": "string",
+      "defaultValue": "EUS-VNET01",
+      "minLength": 1
+    },
+    "vnetRG": {
+      "type": "string",
+      "defaultValue": "EUS-RSG-ALL-PRD",
+      "minLength": 1
+    },
+    "subnetName": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "variables": {
+    "vnetId": "[resourceId(parameters('vnetRG'),'Microsoft.Network/virtualnetworks',parameters('vnetName'))]",
+    "subnetRef": "[concat(variables('vnetId'),'/subnets/',parameters('subnetName'))]"
+  },
+  "resources": [
+    {
+      "apiVersion": "2015-06-15",
+      "name": "[parameters('loadbalancerName')]",
+      "type": "Microsoft.Network/loadBalancers",
+      "location": "[resourceGroup().location]",
+      "dependsOn": [],
+      "properties": {
+        "frontendIPConfigurations": [
+          {
+            "name": "loadBalancerFrontEnd",
+            "properties": {
+              "subnet": {
+                "id": "[variables('subnetRef')]"
+              }
+            }
+          }
+        ],
+        "backendAddressPools": [
+          {
+            "name": "loadBalancerBackEnd"
+          }
+        ],
+        "loadBalancingRules": [
+          {
+            "properties": {
+              "frontendIPConfiguration": {
+                "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('loadbalancerName')), '/frontendIpConfigurations/loadBalancerFrontEnd')]"
+              },
+              "backendAddressPool": {
+                "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('loadbalancerName')), '/backendAddressPools/loadBalancerBackEnd')]"
+              },
+              "probe": {
+                "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('loadbalancerName')), '/probes/probe40011')]"
+              },
+              "protocol": "Tcp",
+              "frontendPort": 40011,
+              "backendPort": 40011,
+              "idleTimeoutInMinutes": 15,
+              "loadDistribution": "SourceIP"
+            },
+            "name": "rule40011"
+          },
+          {
+            "properties": {
+              "frontendIPConfiguration": {
+                "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('loadbalancerName')), '/frontendIpConfigurations/loadBalancerFrontEnd')]"
+              },
+              "backendAddressPool": {
+                "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('loadbalancerName')), '/backendAddressPools/loadBalancerBackEnd')]"
+              },
+              "probe": {
+                "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('loadbalancerName')), '/probes/probe40008')]"
+              },
+              "protocol": "Tcp",
+              "frontendPort": 40008,
+              "backendPort": 40008,
+              "idleTimeoutInMinutes": 15,
+              "loadDistribution": "SourceIP"
+            },
+            "name": "rule40008"
+          },
+          {
+            "properties": {
+              "frontendIPConfiguration": {
+                "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('loadbalancerName')), '/frontendIpConfigurations/loadBalancerFrontEnd')]"
+              },
+              "backendAddressPool": {
+                "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('loadbalancerName')), '/backendAddressPools/loadBalancerBackEnd')]"
+              },
+              "probe": {
+                "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('loadbalancerName')), '/probes/probe40003')]"
+              },
+              "protocol": "Tcp",
+              "frontendPort": 40003,
+              "backendPort": 40003,
+              "idleTimeoutInMinutes": 15,
+              "loadDistribution": "SourceIP"
+            },
+            "name": "rule40003"
+          },
+          {
+            "properties": {
+              "frontendIPConfiguration": {
+                "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('loadbalancerName')), '/frontendIpConfigurations/loadBalancerFrontEnd')]"
+              },
+              "backendAddressPool": {
+                "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('loadbalancerName')), '/backendAddressPools/loadBalancerBackEnd')]"
+              },
+              "probe": {
+                "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('loadbalancerName')), '/probes/probe40015')]"
+              },
+              "protocol": "Tcp",
+              "frontendPort": 40015,
+              "backendPort": 40015,
+              "idleTimeoutInMinutes": 15,
+              "loadDistribution": "SourceIP"
+            },
+            "name": "rule40015"
+          },
+          {
+            "properties": {
+              "frontendIPConfiguration": {
+                "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('loadbalancerName')), '/frontendIpConfigurations/loadBalancerFrontEnd')]"
+              },
+              "backendAddressPool": {
+                "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('loadbalancerName')), '/backendAddressPools/loadBalancerBackEnd')]"
+              },
+              "probe": {
+                "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('loadbalancerName')), '/probes/probe40032')]"
+              },
+              "protocol": "Tcp",
+              "frontendPort": 40032,
+              "backendPort": 40032,
+              "idleTimeoutInMinutes": 15,
+              "loadDistribution": "SourceIP"
+            },
+            "name": "rule40032"
+          },
+          {
+            "properties": {
+              "frontendIPConfiguration": {
+                "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('loadbalancerName')), '/frontendIpConfigurations/loadBalancerFrontEnd')]"
+              },
+              "backendAddressPool": {
+                "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('loadbalancerName')), '/backendAddressPools/loadBalancerBackEnd')]"
+              },
+              "probe": {
+                "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('loadbalancerName')), '/probes/probe40006')]"
+              },
+              "protocol": "Tcp",
+              "frontendPort": 40006,
+              "backendPort": 40006,
+              "idleTimeoutInMinutes": 15,
+              "loadDistribution": "SourceIP"
+            },
+            "name": "rule40006"
+          },
+          {
+            "properties": {
+              "frontendIPConfiguration": {
+                "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('loadbalancerName')), '/frontendIpConfigurations/loadBalancerFrontEnd')]"
+              },
+              "backendAddressPool": {
+                "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('loadbalancerName')), '/backendAddressPools/loadBalancerBackEnd')]"
+              },
+              "probe": {
+                "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('loadbalancerName')), '/probes/probe40029')]"
+              },
+              "protocol": "Tcp",
+              "frontendPort": 40029,
+              "backendPort": 40029,
+              "idleTimeoutInMinutes": 15,
+              "loadDistribution": "SourceIP"
+            },
+            "name": "rule40029"
+          },
+          {
+            "properties": {
+              "frontendIPConfiguration": {
+                "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('loadbalancerName')), '/frontendIpConfigurations/loadBalancerFrontEnd')]"
+              },
+              "backendAddressPool": {
+                "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('loadbalancerName')), '/backendAddressPools/loadBalancerBackEnd')]"
+              },
+              "probe": {
+                "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('loadbalancerName')), '/probes/probe40007')]"
+              },
+              "protocol": "Tcp",
+              "frontendPort": 40007,
+              "backendPort": 40007,
+              "idleTimeoutInMinutes": 15,
+              "loadDistribution": "SourceIP"
+            },
+            "name": "rule40007"
+          },
+          {
+            "properties": {
+              "frontendIPConfiguration": {
+                "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('loadbalancerName')), '/frontendIpConfigurations/loadBalancerFrontEnd')]"
+              },
+              "backendAddressPool": {
+                "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('loadbalancerName')), '/backendAddressPools/loadBalancerBackEnd')]"
+              },
+              "probe": {
+                "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('loadbalancerName')), '/probes/probe40001')]"
+              },
+              "protocol": "Tcp",
+              "frontendPort": 40001,
+              "backendPort": 40001,
+              "idleTimeoutInMinutes": 15,
+              "loadDistribution": "SourceIP"
+            },
+            "name": "rule40001"
+          },
+          {
+            "properties": {
+              "frontendIPConfiguration": {
+                "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('loadbalancerName')), '/frontendIpConfigurations/loadBalancerFrontEnd')]"
+              },
+              "backendAddressPool": {
+                "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('loadbalancerName')), '/backendAddressPools/loadBalancerBackEnd')]"
+              },
+              "probe": {
+                "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('loadbalancerName')), '/probes/probe40013')]"
+              },
+              "protocol": "Tcp",
+              "frontendPort": 40013,
+              "backendPort": 40013,
+              "idleTimeoutInMinutes": 15,
+              "loadDistribution": "SourceIP"
+            },
+            "name": "rule40013"
+          },
+          {
+            "properties": {
+              "frontendIPConfiguration": {
+                "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('loadbalancerName')), '/frontendIpConfigurations/loadBalancerFrontEnd')]"
+              },
+              "backendAddressPool": {
+                "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('loadbalancerName')), '/backendAddressPools/loadBalancerBackEnd')]"
+              },
+              "probe": {
+                "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('loadbalancerName')), '/probes/probe40012')]"
+              },
+              "protocol": "Tcp",
+              "frontendPort": 40012,
+              "backendPort": 40012,
+              "idleTimeoutInMinutes": 15,
+              "loadDistribution": "SourceIP"
+            },
+            "name": "rule40012"
+          },
+          {
+            "properties": {
+              "frontendIPConfiguration": {
+                "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('loadbalancerName')), '/frontendIpConfigurations/loadBalancerFrontEnd')]"
+              },
+              "backendAddressPool": {
+                "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('loadbalancerName')), '/backendAddressPools/loadBalancerBackEnd')]"
+              },
+              "probe": {
+                "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('loadbalancerName')), '/probes/probe40022')]"
+              },
+              "protocol": "Tcp",
+              "frontendPort": 40022,
+              "backendPort": 40022,
+              "idleTimeoutInMinutes": 15,
+              "loadDistribution": "SourceIP"
+            },
+            "name": "rule40022"
+          },
+          {
+            "properties": {
+              "frontendIPConfiguration": {
+                "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('loadbalancerName')), '/frontendIpConfigurations/loadBalancerFrontEnd')]"
+              },
+              "backendAddressPool": {
+                "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('loadbalancerName')), '/backendAddressPools/loadBalancerBackEnd')]"
+              },
+              "probe": {
+                "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('loadbalancerName')), '/probes/probe40021')]"
+              },
+              "protocol": "Tcp",
+              "frontendPort": 40021,
+              "backendPort": 40021,
+              "idleTimeoutInMinutes": 15,
+              "loadDistribution": "SourceIP"
+            },
+            "name": "rule40021"
+          },
+          {
+            "properties": {
+              "frontendIPConfiguration": {
+                "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('loadbalancerName')), '/frontendIpConfigurations/loadBalancerFrontEnd')]"
+              },
+              "backendAddressPool": {
+                "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('loadbalancerName')), '/backendAddressPools/loadBalancerBackEnd')]"
+              },
+              "probe": {
+                "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('loadbalancerName')), '/probes/probe40004')]"
+              },
+              "protocol": "Tcp",
+              "frontendPort": 40004,
+              "backendPort": 40004,
+              "idleTimeoutInMinutes": 15,
+              "loadDistribution": "SourceIP"
+            },
+            "name": "rule40004"
+          },
+          {
+            "properties": {
+              "frontendIPConfiguration": {
+                "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('loadbalancerName')), '/frontendIpConfigurations/loadBalancerFrontEnd')]"
+              },
+              "backendAddressPool": {
+                "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('loadbalancerName')), '/backendAddressPools/loadBalancerBackEnd')]"
+              },
+              "probe": {
+                "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('loadbalancerName')), '/probes/probe40024')]"
+              },
+              "protocol": "Tcp",
+              "frontendPort": 40024,
+              "backendPort": 40024,
+              "idleTimeoutInMinutes": 15,
+              "loadDistribution": "SourceIP"
+            },
+            "name": "rule40024"
+          },
+          {
+            "properties": {
+              "frontendIPConfiguration": {
+                "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('loadbalancerName')), '/frontendIpConfigurations/loadBalancerFrontEnd')]"
+              },
+              "backendAddressPool": {
+                "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('loadbalancerName')), '/backendAddressPools/loadBalancerBackEnd')]"
+              },
+              "probe": {
+                "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('loadbalancerName')), '/probes/probe40027')]"
+              },
+              "protocol": "Tcp",
+              "frontendPort": 40027,
+              "backendPort": 40027,
+              "idleTimeoutInMinutes": 15,
+              "loadDistribution": "SourceIP"
+            },
+            "name": "rule40027"
+          },
+          {
+            "properties": {
+              "frontendIPConfiguration": {
+                "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('loadbalancerName')), '/frontendIpConfigurations/loadBalancerFrontEnd')]"
+              },
+              "backendAddressPool": {
+                "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('loadbalancerName')), '/backendAddressPools/loadBalancerBackEnd')]"
+              },
+              "probe": {
+                "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('loadbalancerName')), '/probes/probe40028')]"
+              },
+              "protocol": "Tcp",
+              "frontendPort": 40028,
+              "backendPort": 40028,
+              "idleTimeoutInMinutes": 15,
+              "loadDistribution": "SourceIP"
+            },
+            "name": "rule40028"
+          },
+          {
+            "properties": {
+              "frontendIPConfiguration": {
+                "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('loadbalancerName')), '/frontendIpConfigurations/loadBalancerFrontEnd')]"
+              },
+              "backendAddressPool": {
+                "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('loadbalancerName')), '/backendAddressPools/loadBalancerBackEnd')]"
+              },
+              "probe": {
+                "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('loadbalancerName')), '/probes/probe40002')]"
+              },
+              "protocol": "Tcp",
+              "frontendPort": 40002,
+              "backendPort": 40002,
+              "idleTimeoutInMinutes": 15,
+              "loadDistribution": "SourceIP"
+            },
+            "name": "rule40002"
+          },
+          {
+            "properties": {
+              "frontendIPConfiguration": {
+                "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('loadbalancerName')), '/frontendIpConfigurations/loadBalancerFrontEnd')]"
+              },
+              "backendAddressPool": {
+                "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('loadbalancerName')), '/backendAddressPools/loadBalancerBackEnd')]"
+              },
+              "probe": {
+                "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('loadbalancerName')), '/probes/probe40009')]"
+              },
+              "protocol": "Tcp",
+              "frontendPort": 40009,
+              "backendPort": 40009,
+              "idleTimeoutInMinutes": 15,
+              "loadDistribution": "SourceIP"
+            },
+            "name": "rule40009"
+          },
+          {
+            "properties": {
+              "frontendIPConfiguration": {
+                "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('loadbalancerName')), '/frontendIpConfigurations/loadBalancerFrontEnd')]"
+              },
+              "backendAddressPool": {
+                "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('loadbalancerName')), '/backendAddressPools/loadBalancerBackEnd')]"
+              },
+              "probe": {
+                "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('loadbalancerName')), '/probes/probe40023')]"
+              },
+              "protocol": "Tcp",
+              "frontendPort": 40023,
+              "backendPort": 40023,
+              "idleTimeoutInMinutes": 15,
+              "loadDistribution": "SourceIP"
+            },
+            "name": "rule40023"
+          }
+        ],
+        "probes": [
+          {
+            "properties": {
+              "protocol": "Tcp",
+              "port": 40011,
+              "intervalInSeconds": 15,
+              "numberOfProbes": 2
+            },
+            "name": "probe40011"
+          },
+          {
+            "properties": {
+              "protocol": "Tcp",
+              "port": 40008,
+              "intervalInSeconds": 15,
+              "numberOfProbes": 2
+            },
+            "name": "probe40008"
+          },
+          {
+            "properties": {
+              "protocol": "Tcp",
+              "port": 40003,
+              "intervalInSeconds": 15,
+              "numberOfProbes": 2
+            },
+            "name": "probe40003"
+          },
+          {
+            "properties": {
+              "protocol": "Tcp",
+              "port": 40029,
+              "intervalInSeconds": 15,
+              "numberOfProbes": 2
+            },
+            "name": "probe40029"
+          },
+          {
+            "properties": {
+              "protocol": "Tcp",
+              "port": 40015,
+              "intervalInSeconds": 15,
+              "numberOfProbes": 2
+            },
+            "name": "probe40015"
+          },
+          {
+            "properties": {
+              "protocol": "Tcp",
+              "port": 40032,
+              "intervalInSeconds": 15,
+              "numberOfProbes": 2
+            },
+            "name": "probe40032"
+          },
+          {
+            "properties": {
+              "protocol": "Tcp",
+              "port": 40006,
+              "intervalInSeconds": 15,
+              "numberOfProbes": 2
+            },
+            "name": "probe40006"
+          },
+          {
+            "properties": {
+              "protocol": "Tcp",
+              "port": 40007,
+              "intervalInSeconds": 15,
+              "numberOfProbes": 2
+            },
+            "name": "probe40007"
+          },
+          {
+            "properties": {
+              "protocol": "Tcp",
+              "port": 40001,
+              "intervalInSeconds": 15,
+              "numberOfProbes": 2
+            },
+            "name": "probe40001"
+          },
+          {
+            "properties": {
+              "protocol": "Tcp",
+              "port": 40013,
+              "intervalInSeconds": 15,
+              "numberOfProbes": 2
+            },
+            "name": "probe40013"
+          },
+          {
+            "properties": {
+              "protocol": "Tcp",
+              "port": 40012,
+              "intervalInSeconds": 15,
+              "numberOfProbes": 2
+            },
+            "name": "probe40012"
+          },
+          {
+            "properties": {
+              "protocol": "Tcp",
+              "port": 40022,
+              "intervalInSeconds": 15,
+              "numberOfProbes": 2
+            },
+            "name": "probe40022"
+          },
+          {
+            "properties": {
+              "protocol": "Tcp",
+              "port": 40021,
+              "intervalInSeconds": 15,
+              "numberOfProbes": 2
+            },
+            "name": "probe40021"
+          },
+          {
+            "properties": {
+              "protocol": "Tcp",
+              "port": 40004,
+              "intervalInSeconds": 15,
+              "numberOfProbes": 2
+            },
+            "name": "probe40004"
+          },
+          {
+            "properties": {
+              "protocol": "Tcp",
+              "port": 40024,
+              "intervalInSeconds": 15,
+              "numberOfProbes": 2
+            },
+            "name": "probe40024"
+          },
+          {
+            "properties": {
+              "protocol": "Tcp",
+              "port": 40027,
+              "intervalInSeconds": 15,
+              "numberOfProbes": 2
+            },
+            "name": "probe40027"
+          },
+          {
+            "properties": {
+              "protocol": "Tcp",
+              "port": 40028,
+              "intervalInSeconds": 15,
+              "numberOfProbes": 2
+            },
+            "name": "probe40028"
+          },
+          {
+            "properties": {
+              "protocol": "Tcp",
+              "port": 40002,
+              "intervalInSeconds": 15,
+              "numberOfProbes": 2
+            },
+            "name": "probe40002"
+          },
+          {
+            "properties": {
+              "protocol": "Tcp",
+              "port": 40009,
+              "intervalInSeconds": 15,
+              "numberOfProbes": 2
+            },
+            "name": "probe40009"
+          },
+          {
+            "properties": {
+              "protocol": "Tcp",
+              "port": 40023,
+              "intervalInSeconds": 15,
+              "numberOfProbes": 2
+            },
+            "name": "probe40023"
+          }
+        ]
+      }
+    }
+  ],
+  "outputs": {
+    "servicesloadBalancerBackendAddressPoolRef": {
+      "type": "string",
+      "value": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('loadbalancerName')),'/backendAddressPools/loadBalancerBackEnd')]"
+    },
+    "servicesloadBalancerName": {
+      "type": "string",
+      "value": "[parameters('loadbalancerName')]"
+    }
+  }
+}

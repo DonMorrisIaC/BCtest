@@ -1,0 +1,121 @@
+﻿{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+  "parameters": {
+    "loadbalancerName": {
+      "type": "string",
+      "defaultValue": "apps-lb",
+      "minLength": 1
+    },
+    "vnetName": {
+      "type": "string",
+      "defaultValue": "EUS-VNET01",
+      "minLength": 1
+    },
+    "vnetRG": {
+      "type": "string",
+      "defaultValue": "EUS-RSG-ALL-PRD",
+      "minLength": 1
+    },
+    "subnetName": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "variables": {
+    "vnetId": "[resourceId(parameters('vnetRG'),'Microsoft.Network/virtualnetworks',parameters('vnetName'))]",
+    "subnetRef": "[concat(variables('vnetId'),'/subnets/',parameters('subnetName'))]"
+  },
+    "resources": [
+        {
+            "apiVersion": "2015-06-15",
+            "name": "[parameters('loadbalancerName')]",
+            "type": "Microsoft.Network/loadBalancers",
+            "location": "[resourceGroup().location]",
+            "dependsOn": [],
+            "properties": {
+                "frontendIPConfigurations": [
+                    {
+                        "name": "loadBalancerFrontEnd",
+                        "properties": {
+                          "subnet": {
+                            "id": "[variables('subnetRef')]"
+                          }
+                        }
+                    }
+                ],
+                "backendAddressPools": [
+                    {
+                        "name": "loadBalancerBackEnd"
+                    }
+                ],
+                "loadBalancingRules": [
+                    {
+                        "properties": {
+                            "frontendIPConfiguration": {
+                                "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('loadbalancerName')), '/frontendIpConfigurations/loadBalancerFrontEnd')]"
+                            },
+                            "backendAddressPool": {
+                                "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('loadbalancerName')), '/backendAddressPools/loadBalancerBackEnd')]"
+                            },
+                            "probe": {
+                                "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('loadbalancerName')), '/probes/webTrafficProbe')]"
+                            },
+                            "protocol": "Tcp",
+                            "frontendPort": 80,
+                            "backendPort": 80,
+                            "idleTimeoutInMinutes": 15,
+                            "loadDistribution": "SourceIP"
+                        },
+                        "name": "webTrafficRule"
+                    },
+                    {
+                        "properties": {
+                            "frontendIPConfiguration": {
+                                "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('loadbalancerName')), '/frontendIpConfigurations/loadBalancerFrontEnd')]"
+                            },
+                            "backendAddressPool": {
+                                "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('loadbalancerName')), '/backendAddressPools/loadBalancerBackEnd')]"
+                            },
+                            "probe": {
+                                "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('loadbalancerName')), '/probes/webTrafficProbeHttps')]"
+                            },
+                            "protocol": "Tcp",
+                            "frontendPort": 443,
+                            "backendPort": 443,
+                            "idleTimeoutInMinutes": 15,
+                            "loadDistribution": "SourceIP"
+                        },
+                        "name": "webTrafficRuleHttps"
+                    }
+                ],
+                "probes": [
+                    {
+                        "properties": {
+                            "protocol": "Tcp",
+                            "port": 80,
+                            "intervalInSeconds": 15,
+                            "numberOfProbes": 2
+                        },
+                        "name": "webTrafficProbe"
+                    },
+                    {
+                        "properties": {
+                            "protocol": "Tcp",
+                            "port": 443,
+                            "intervalInSeconds": 15,
+                            "numberOfProbes": 2
+                        },
+                        "name": "webTrafficProbeHttps"
+                    }
+                ]
+            }
+        }
+    ],
+    "outputs": {
+        "appsloadBalancerBackendAddressPoolRef": {
+            "type": "string",
+            "value": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('loadbalancerName')), '/backendAddressPools/loadBalancerBackEnd')]"
+        }
+    }
+}
