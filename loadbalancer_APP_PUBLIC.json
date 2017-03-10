@@ -4,22 +4,52 @@
   "parameters": {
     "loadbalancerName": {
       "type": "string",
-      "defaultValue": "apps-lb-public",
       "minLength": 1
     },
-    "loadbalancerDns": {
+    "vnetName": {
       "type": "string",
-      "minLength": 1,
-      "maxLength": 80
+      "minLength": 1
     },
-    "loadbalancerPublicIPAddressName": {
+    "vnetRG": {
       "type": "string",
-      "defaultValue": "apps-lb-publicIp"
+      "minLength": 1
+    },
+    "availabilitySetName": {
+      "type": "string",
+    },
+    "vmName": {
+      "type": "string",
+    },
+    "subnetRef": {
+      "type": "string",
+    },
+    "dnsNameforPublicIP": {
+      "type": "string",
+    },
+    "environment": {
+      "type": "string",
+      "allowedValues": [
+        "Production",
+        "Staging",
+        "Test",
+        "Development",
+        "Q/A",
+        "Bastion",
+        "Other"
+      ],
+    },
+    "buildDate": {
+      "type": "string",
+    },
+    "buildBy": {
+      "type": "string",
     }
   },
-    "variables": {},
+  "variables": {
+    "vnetId": "[resourceId(parameters('vnetRG'),'Microsoft.Network/virtualnetworks',parameters('vnetName'))]"
+  },
     "resources": [
-        {
+	    {
             "apiVersion": "2015-05-01-preview",
             "type": "Microsoft.Network/publicIPAddresses",
             "name": "[parameters('loadbalancerPublicIPAddressName')]",
@@ -27,7 +57,7 @@
             "properties": {
                 "publicIPAllocationMethod": "Dynamic",
                 "dnsSettings": {
-                    "domainNameLabel": "[parameters('loadbalancerDns')]"
+                    "domainNameLabel": "[parameters('dnsNameforPublicIP')]"
                 }
             }
         },
@@ -117,6 +147,32 @@
                 ]
             }
         }
+              {
+        "apiVersion": "2015-06-15",
+        "type": "Microsoft.Network/networkInterfaces",
+        "name": "[concat(parameters('vmName'),'-nic' )]",
+        "location": "[resourceGroup().location]",
+        "tags": {
+          "displayName": "NetworkInterface",
+          "Environment": "[parameters('environment')]",
+          "BuildDate": "[parameters('buildDate')]",
+          "BuildBy": "[parameters('buildBy')]"
+        },
+        "dependsOn": [ ],
+        "properties": {
+          "ipConfigurations": [
+            {
+              "name": "ipconfig1",
+              "properties": {
+                "privateIPAllocationMethod": "Dynamic",
+                "subnet": {
+                  "id": "[parameters('subnetRef')]"
+                }
+              }
+            }
+          ]
+        }
+      }
     ],
     "outputs": {
         "appsloadBalancerBackendAddressPoolRef": {
