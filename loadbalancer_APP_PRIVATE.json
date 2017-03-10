@@ -1,50 +1,34 @@
-﻿{
+{
     "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
   "parameters": {
     "loadbalancerName": {
       "type": "string",
-      "defaultValue": "apps-lb",
       "minLength": 1
     },
     "vnetName": {
       "type": "string",
-      "defaultValue": "EUS-VNET01",
       "minLength": 1
     },
     "vnetRG": {
       "type": "string",
-      "defaultValue": "EUS-RSG-ALL-PRD",
       "minLength": 1
     },
      "subnetName": {
       "type": "string",
-      "defaultValue": "LOC-VNET01-DMZ-ENV",
       "minLength": 1,
      },
     "availabilitySetName": {
       "type": "string",
-      "metadata": {
-        "description": "The name of the availability set for this VM"
-      }
     },
     "vmName": {
       "type": "string",
-      "metadata": {
-        "description": "The name of the virtual mahchine"
-      }
     },
     "subnetRef": {
       "type": "string",
-      "metadata": {
-        "description": "The referenceid of the subnet where we will be deploying the LB"
-      }
     },
     "dnsNameforPublicIP": {
       "type": "string",
-      "metadata": {
-        "description": "The DNS Label for the public IP assigned to the load balancer"
-      }
     },
     "environment": {
       "type": "string",
@@ -57,27 +41,12 @@
         "Bastion",
         "Other"
       ],
-      "metadata": {
-        "description": "The Environment type we are building"
-      },
-      "defaultValue": "Production"
     },
-
     "buildDate": {
       "type": "string",
-
-      "metadata": {
-        "description": "The date of this build"
-      },
-      "defaultValue": "01/01/2999"
     },
     "buildBy": {
       "type": "string",
-
-      "metadata": {
-        "description": "The name of the person who build this environment"
-      },
-      "defaultValue": "First Last"
     }
   },
   "variables": {
