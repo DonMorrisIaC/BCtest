@@ -20,6 +20,63 @@
     "subnetName": {
       "type": "string",
       "minLength": 1
+    },
+	"availabilitySetName": {
+      "type": "string",
+      "metadata": {
+        "description": "The name of the availability set for this VM"
+      }
+    },
+    "vmName": {
+      "type": "string",
+      "metadata": {
+        "description": "The name of the virtual mahchine"
+      }
+    },
+    "subnetRef": {
+      "type": "string",
+      "metadata": {
+        "description": "The referenceid of the subnet where we will be deploying the LB"
+      }
+    },
+    "dnsNameforPublicIP": {
+      "type": "string",
+      "metadata": {
+        "description": "The DNS Label for the public IP assigned to the load balancer"
+      }
+    },
+    "environment": {
+      "type": "string",
+      "allowedValues": [
+        "Production",
+        "Staging",
+        "Test",
+        "Development",
+        "Q/A",
+        "Bastion",
+        "Other"
+      ],
+      "metadata": {
+        "description": "The Environment type we are building"
+      },
+      "defaultValue": "Production"
+    },
+
+    "buildDate": {
+      "type": "string",
+
+      "metadata": {
+        "description": "The date of this build"
+      },
+      "defaultValue": "01/01/2999"
+    },
+    "buildBy": {
+      "type": "string",
+
+      "metadata": {
+        "description": "The name of the person who build this environment"
+      },
+      "defaultValue": "First Last"
     }
   },
   "variables": {
