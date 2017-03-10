@@ -1,54 +1,76 @@
 ﻿{
-  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
-  "contentVersion": "1.0.0.0",
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
   "parameters": {
     "loadbalancerName": {
       "type": "string",
-      "defaultValue": "services-lb",
       "minLength": 1
     },
     "vnetName": {
       "type": "string",
-      "defaultValue": "EUS-VNET01",
       "minLength": 1
     },
     "vnetRG": {
       "type": "string",
-      "defaultValue": "EUS-RSG-ALL-PRD",
       "minLength": 1
     },
-    "subnetName": {
+    "availabilitySetName": {
       "type": "string",
-      "minLength": 1
+    },
+    "vmName": {
+      "type": "string",
+    },
+    "subnetRef": {
+      "type": "string",
+    },
+    "dnsNameforPublicIP": {
+      "type": "string",
+    },
+    "environment": {
+      "type": "string",
+      "allowedValues": [
+        "Production",
+        "Staging",
+        "Test",
+        "Development",
+        "Q/A",
+        "Bastion",
+        "Other"
+      ],
+    },
+    "buildDate": {
+      "type": "string",
+    },
+    "buildBy": {
+      "type": "string",
     }
   },
   "variables": {
-    "vnetId": "[resourceId(parameters('vnetRG'),'Microsoft.Network/virtualnetworks',parameters('vnetName'))]",
-    "subnetRef": "[concat(variables('vnetId'),'/subnets/',parameters('subnetName'))]"
+    "vnetId": "[resourceId(parameters('vnetRG'),'Microsoft.Network/virtualnetworks',parameters('vnetName'))]"
   },
-  "resources": [
-    {
-      "apiVersion": "2015-06-15",
-      "name": "[parameters('loadbalancerName')]",
-      "type": "Microsoft.Network/loadBalancers",
-      "location": "[resourceGroup().location]",
-      "dependsOn": [],
-      "properties": {
-        "frontendIPConfigurations": [
-          {
-            "name": "loadBalancerFrontEnd",
+    "resources": [
+        {
+            "apiVersion": "2015-06-15",
+            "name": "[parameters('loadbalancerName')]",
+            "type": "Microsoft.Network/loadBalancers",
+            "location": "[resourceGroup().location]",
+            "dependsOn": [],
             "properties": {
-              "subnet": {
-                "id": "[variables('subnetRef')]"
-              }
-            }
-          }
-        ],
-        "backendAddressPools": [
-          {
-            "name": "loadBalancerBackEnd"
-          }
-        ],
+                "frontendIPConfigurations": [
+                    {
+                        "name": "loadBalancerFrontEnd",
+                        "properties": {
+                          "subnet": {
+                            "id": "[parameters('subnetRef')]"
+                          }
+                        }
+                    }
+                ],
+                "backendAddressPools": [
+                    {
+                        "name": "loadBalancerBackEnd"
+                    }
+                ],
         "loadBalancingRules": [
           {
             "properties": {
@@ -613,17 +635,39 @@
             "name": "probe40023"
           }
         ]
+            }
+        },
+              {
+        "apiVersion": "2015-06-15",
+        "type": "Microsoft.Network/networkInterfaces",
+        "name": "[concat(parameters('vmName'),'-nic' )]",
+        "location": "[resourceGroup().location]",
+        "tags": {
+          "displayName": "NetworkInterface",
+          "Environment": "[parameters('environment')]",
+          "BuildDate": "[parameters('buildDate')]",
+          "BuildBy": "[parameters('buildBy')]"
+        },
+        "dependsOn": [ ],
+        "properties": {
+          "ipConfigurations": [
+            {
+              "name": "ipconfig1",
+              "properties": {
+                "privateIPAllocationMethod": "Dynamic",
+                "subnet": {
+                  "id": "[parameters('subnetRef')]"
+                }
+              }
+            }
+          ]
+        }
       }
+    ],
+    "outputs": {
+        "appsloadBalancerBackendAddressPoolRef": {
+            "type": "string",
+            "value": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('loadbalancerName')), '/backendAddressPools/loadBalancerBackEnd')]"
+        }
     }
-  ],
-  "outputs": {
-    "servicesloadBalancerBackendAddressPoolRef": {
-      "type": "string",
-      "value": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('loadbalancerName')),'/backendAddressPools/loadBalancerBackEnd')]"
-    },
-    "servicesloadBalancerName": {
-      "type": "string",
-      "value": "[parameters('loadbalancerName')]"
-    }
-  }
 }
