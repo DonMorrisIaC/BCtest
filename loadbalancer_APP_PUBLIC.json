@@ -1,7 +1,7 @@
 ﻿﻿{
-    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
-    "contentVersion": "1.0.0.0",
-  "parameters": {
+"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+"contentVersion": "1.0.0.0",
+"parameters": {
     "loadbalancerName": {
       "type": "string",
       "minLength": 1
@@ -41,7 +41,7 @@
         "Q/A",
         "Bastion",
         "Other"
-      ],
+      ]
     },
     "buildDate": {
       "type": "string"
