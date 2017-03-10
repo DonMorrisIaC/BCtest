@@ -71,14 +71,16 @@
             "name": "[parameters('loadbalancerName')]",
             "type": "Microsoft.Network/loadBalancers",
             "location": "[resourceGroup().location]",
-            "dependsOn": [],
+            "dependsOn": [
+			    "[concat('Microsoft.Network/publicIPAddresses/', parameters('pipName'))]"
+			],
             "properties": {
                 "frontendIPConfigurations": [
                     {
                         "name": "loadBalancerFrontEnd",
                         "properties": {
                           "subnet": {
-                            "id": "[parameters('subnetRef')]"
+                            "id": "[resourceId('Microsoft.Network/publicIPAddresses', parameters('pipName'))]"
                           }
                         }
                     }
