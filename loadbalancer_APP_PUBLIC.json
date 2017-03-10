@@ -26,6 +26,11 @@
     "dnsNameforPublicIP": {
       "type": "string",
     },
+	"loadbalancerPublicIPAddressName": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 80
+    },
     "environment": {
       "type": "string",
       "allowedValues": [
