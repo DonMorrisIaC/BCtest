@@ -15,19 +15,19 @@
       "minLength": 1
     },
     "availabilitySetName": {
-      "type": "string",
+      "type": "string"
     },
     "vmName": {
-      "type": "string",
+      "type": "string"
     },
     "subnetRef": {
-      "type": "string",
+      "type": "string"
     },
     "dnsNameforPublicIP": {
-      "type": "string",
+      "type": "string"
     },
     "pipName": {
-      "type": "string",
+      "type": "string"
       "minLength": 1,
       "maxLength": 80
     },
@@ -44,10 +44,10 @@
       ],
     },
     "buildDate": {
-      "type": "string",
+      "type": "string"
     },
     "buildBy": {
-      "type": "string",
+      "type": "string"
     }
   },
   "variables": {
