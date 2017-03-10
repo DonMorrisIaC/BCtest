@@ -168,7 +168,33 @@
                     }
                 ]
             }
+        },
+              {
+        "apiVersion": "2015-06-15",
+        "type": "Microsoft.Network/networkInterfaces",
+        "name": "[concat(parameters('vmName'),'-nic' )]",
+        "location": "[resourceGroup().location]",
+        "tags": {
+          "displayName": "NetworkInterface",
+          "Environment": "[parameters('environment')]",
+          "BuildDate": "[parameters('buildDate')]",
+          "BuildBy": "[parameters('buildBy')]"
+        },
+        "dependsOn": [ ],
+        "properties": {
+          "ipConfigurations": [
+            {
+              "name": "ipconfig1",
+              "properties": {
+                "privateIPAllocationMethod": "Dynamic",
+                "subnet": {
+                  "id": "[parameters('subnetRef')]"
+                }
+              }
+            }
+          ]
         }
+      }
     ],
     "outputs": {
         "appsloadBalancerBackendAddressPoolRef": {
