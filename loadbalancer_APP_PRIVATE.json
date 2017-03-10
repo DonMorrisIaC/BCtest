@@ -14,10 +14,6 @@
       "type": "string",
       "minLength": 1
     },
-     "subnetName": {
-      "type": "string",
-      "minLength": 1,
-     },
     "availabilitySetName": {
       "type": "string",
     },
@@ -50,8 +46,7 @@
     }
   },
   "variables": {
-    "vnetId": "[resourceId(parameters('vnetRG'),'Microsoft.Network/virtualnetworks',parameters('vnetName'))]",
-    "subnetRef": "[concat(variables('vnetId'),'/subnets/',parameters('subnetName'))]"
+    "vnetId": "[resourceId(parameters('vnetRG'),'Microsoft.Network/virtualnetworks',parameters('vnetName'))]"
   },
     "resources": [
         {
@@ -66,7 +61,7 @@
                         "name": "loadBalancerFrontEnd",
                         "properties": {
                           "subnet": {
-                            "id": "[variables('subnetRef')]"
+                            "id": "[parameters('subnetRef')]"
                           }
                         }
                     }
