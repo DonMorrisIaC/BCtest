@@ -17,6 +17,11 @@
       "defaultValue": "EUS-RSG-ALL-PRD",
       "minLength": 1
     },
+     "subnetName": {
+      "type": "string",
+      "defaultValue": "LOC-VNET01-DMZ-ENV",
+      "minLength": 1,
+     },
     "availabilitySetName": {
       "type": "string",
       "metadata": {
