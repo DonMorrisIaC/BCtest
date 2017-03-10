@@ -1,7 +1,7 @@
-﻿﻿{
-"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
-"contentVersion": "1.0.0.0",
-"parameters": {
+﻿{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+  "parameters": {
     "loadbalancerName": {
       "type": "string",
       "minLength": 1
@@ -15,18 +15,18 @@
       "minLength": 1
     },
     "availabilitySetName": {
-      "type": "string"
+      "type": "string",
     },
     "vmName": {
-      "type": "string"
+      "type": "string",
     },
     "subnetRef": {
-      "type": "string"
+      "type": "string",
     },
     "dnsNameforPublicIP": {
-      "type": "string"
+      "type": "string",
     },
-    "pipName": {
+	"pipName": {
       "type": "string",
       "minLength": 1,
       "maxLength": 80
@@ -41,47 +41,33 @@
         "Q/A",
         "Bastion",
         "Other"
-      ]
+      ],
     },
     "buildDate": {
-      "type": "string"
+      "type": "string",
     },
     "buildBy": {
-      "type": "string"
+      "type": "string",
     }
   },
   "variables": {
     "vnetId": "[resourceId(parameters('vnetRG'),'Microsoft.Network/virtualnetworks',parameters('vnetName'))]"
   },
     "resources": [
-	    {
-            "apiVersion": "2015-05-01-preview",
-            "type": "Microsoft.Network/publicIPAddresses",
-            "name": "[parameters('pipName')]",
-            "location": "[resourceGroup().location]",
-            "properties": {
-                "publicIPAllocationMethod": "Dynamic",
-                "dnsSettings": {
-                    "domainNameLabel": "[parameters('dnsNameforPublicIP')]"
-                }
-            }
-        },
         {
             "apiVersion": "2015-06-15",
             "name": "[parameters('loadbalancerName')]",
             "type": "Microsoft.Network/loadBalancers",
             "location": "[resourceGroup().location]",
-            "dependsOn": [
-                "[concat('Microsoft.Network/publicIPAddresses/', parameters('pipName'))]"
-            ],
+            "dependsOn": [],
             "properties": {
                 "frontendIPConfigurations": [
                     {
                         "name": "loadBalancerFrontEnd",
                         "properties": {
-                            "publicIPAddress": {
-                                "id": "[resourceId('Microsoft.Network/publicIPAddresses', parameters('pipName'))]"
-                            }
+                          "subnet": {
+                            "id": "[parameters('subnetRef')]"
+                          }
                         }
                     }
                 ],
