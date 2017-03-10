@@ -1,4 +1,4 @@
-﻿{
+﻿﻿{
     "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
   "parameters": {
@@ -26,7 +26,7 @@
     "dnsNameforPublicIP": {
       "type": "string",
     },
-	"loadbalancerPublicIPAddressName": {
+    "pipName": {
       "type": "string",
       "minLength": 1,
       "maxLength": 80
@@ -57,7 +57,7 @@
 	    {
             "apiVersion": "2015-05-01-preview",
             "type": "Microsoft.Network/publicIPAddresses",
-            "name": "[parameters('loadbalancerPublicIPAddressName')]",
+            "name": "[parameters('pipName')]",
             "location": "[resourceGroup().location]",
             "properties": {
                 "publicIPAllocationMethod": "Dynamic",
@@ -72,7 +72,7 @@
             "type": "Microsoft.Network/loadBalancers",
             "location": "[resourceGroup().location]",
             "dependsOn": [
-                "[concat('Microsoft.Network/publicIPAddresses/', parameters('loadbalancerPublicIPAddressName'))]"
+                "[concat('Microsoft.Network/publicIPAddresses/', parameters('pipName'))]"
             ],
             "properties": {
                 "frontendIPConfigurations": [
@@ -80,7 +80,7 @@
                         "name": "loadBalancerFrontEnd",
                         "properties": {
                             "publicIPAddress": {
-                                "id": "[resourceId('Microsoft.Network/publicIPAddresses', parameters('loadbalancerPublicIPAddressName'))]"
+                                "id": "[resourceId('Microsoft.Network/publicIPAddresses', parameters('pipName'))]"
                             }
                         }
                     }
