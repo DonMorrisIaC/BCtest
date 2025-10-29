@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "hello.fullname" . }}
+  name: {{ printf "%s-%s" .Release.Name .Chart.Name | trunc 63 | trimSuffix "-" }}
   labels:
     app.kubernetes.io/name: {{ include "hello.name" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
