@@ -1,0 +1,8 @@
+replicaCount: 1
+
+ingress:
+  hosts:
+    - host: prod.example.com
+      paths:
+        - path: /
+          pathType: Prefix
