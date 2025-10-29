@@ -1,10 +1,9 @@
 replicaCount: 1
 
 image:
-  repository: nginx:1.14.2
+  repository: nginx
+  tag: "1.27-alpine"
   pullPolicy: IfNotPresent
-
-containerPort: 8080
 
 service:
   type: ClusterIP
@@ -12,9 +11,5 @@ service:
 
 ingress:
   enabled: true
-  className: webapprouting.kubernetes.azure.com
-  annotations: {}
-  hosts: []
-  tls: []
-
-resources: {}
+  className: webapprouting.kubernetes.azure.com   # AKS Application Routing ingress class
+  host: nginx.example.com                         # change or leave blank for any host

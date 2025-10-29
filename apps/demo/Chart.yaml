@@ -1,6 +1,6 @@
 apiVersion: v2
-name: hello
-description: A simple Hello World web app for AKS
+name: simple-nginx
+description: Minimal NGINX deployment with HTTP ingress
 type: application
 version: 0.1.0
 appVersion: "1.0.0"

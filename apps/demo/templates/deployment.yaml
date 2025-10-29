@@ -1,40 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ printf "%s-%s" .Release.Name .Chart.Name | trunc 63 | trimSuffix "-" }}
-  labels:
-    app.kubernetes.io/name: {{ .Chart.Name }}
-    app.kubernetes.io/instance: {{ .Release.Name }}
+  name: {{ .Release.Name }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app.kubernetes.io/name: {{ .Chart.Name }}
-      app.kubernetes.io/instance: {{ .Release.Name }}
+      app: {{ .Release.Name }}
   template:
     metadata:
       labels:
-        app.kubernetes.io/name: {{ .Chart.Name }}
-        app.kubernetes.io/instance: {{ .Release.Name }}
+        app: {{ .Release.Name }}
     spec:
       containers:
-        - name: web
-          image: "{{ .Values.image.repository }}"
+        - name: nginx
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
-            - containerPort: {{ .Values.containerPort }}
-          readinessProbe:
-            tcpSocket:
-              port: {{ .Values.containerPort }}
-            initialDelaySeconds: 2
-            periodSeconds: 5
-          livenessProbe:
-            tcpSocket:
-              port: {{ .Values.containerPort }}
-            initialDelaySeconds: 10
-            periodSeconds: 10
-          command: ["/bin/sh", "-c"]
-          args:
-            - >
-              printf 'HTTP/1.1 200 OK\r\n\r\nHello from {{ .Release.Name }} in AKS via Argo CD\n' |
-              while true; do nc -l -p {{ .Values.containerPort }} -k -q 1 -s 0.0.0.0; done
+            - containerPort: 80
