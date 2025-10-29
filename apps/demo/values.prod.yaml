@@ -6,3 +6,4 @@ ingress:
       paths:
         - path: /
           pathType: Prefix
+  tls: []  # optionally add TLS secret here for dev
