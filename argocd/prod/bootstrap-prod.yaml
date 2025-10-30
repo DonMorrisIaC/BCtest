@@ -1,0 +1,21 @@
+# bootstrap-prod.yaml
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: root-prod
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/DonMorrisIaC/BCtest.git
+    targetRevision: main
+    path: argocd/prod/applications
+    directory:
+      recurse: true
+  destination:
+    server: in-cluster
+    namespace: argocd
+  syncPolicy:
+    automated: { prune: true, selfHeal: true }
+    syncOptions:
+      - CreateNamespace=true

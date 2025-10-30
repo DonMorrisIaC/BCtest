@@ -1,0 +1,28 @@
+# argocd/prod/applications/app1.yaml
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: app1
+  namespace: argocd
+  labels:
+    env: prod
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/DonMorrisIaC/BCtest.git
+    targetRevision: main
+    path: apps/app1
+    helm:
+      valueFiles:
+        - values.yaml
+        - values/values.prod.yaml
+  destination:
+    server: in-cluster
+    namespace: demo
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+      enabled: true
+    syncOptions:
+      - CreateNamespace=true
