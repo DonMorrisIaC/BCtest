@@ -8,7 +8,7 @@ spec:
   project: default
   source:
     repoURL: https://github.com/DonMorrisIaC/BCtest.git
-    targetRevision: main
+    targetRevision: master
     path: argocd/nonprod/applications
     directory:
       recurse: true

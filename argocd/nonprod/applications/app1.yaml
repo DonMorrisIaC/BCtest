@@ -10,7 +10,7 @@ spec:
   project: default
   source:
     repoURL: https://github.com/DonMorrisIaC/BCtest.git
-    targetRevision: main
+    targetRevision: master
     path: apps/app1
     helm:
       valueFiles:
